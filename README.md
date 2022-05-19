@@ -22,14 +22,11 @@ pytorch 1.10
 ## Data
 
 
-## Files:
+## Modules
 
 
-## Modules:
+## Scripts
 
 
-## Scripts:
-
-
-## Usage:
+## Usage
 
