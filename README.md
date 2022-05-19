@@ -18,6 +18,7 @@ Dependencies:
 matplotlib 3.4.3
 numpy 1.21.2
 pytorch 1.10
+EMD-signal 1.2.3
 ```
 
 
