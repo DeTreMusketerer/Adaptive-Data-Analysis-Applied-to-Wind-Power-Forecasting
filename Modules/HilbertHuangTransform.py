@@ -20,7 +20,8 @@ Track changes:
             1.7: Cleaning up the script adding some docstrings when missing.
                  Removed CEEMDAN and EEMD functionality as well as the support
                  for the CS based decompositions. Also removed plotting
-                 functionality and unittests. (19/05/2022)
+                 functionality and unittests. Added the unification
+                 procedure. (19/05/2022)
 """
 
 
@@ -261,6 +262,127 @@ def HHT(y, f_s, diff = 'trapezoid', order = 2, **kwargs):
     for i in range(s):
         omega[i, :], a[i, :] = IF_IA(IMFs[i], f_s, diff, order)
     return omega, a
+
+
+def unify_IMFs(IMFs, J, i):
+    """
+    Unify the components for different windows in terms of what each component
+    represents. This consists of a number of steps:
+        1) First components above s are summed together to form the
+           residual.
+        2) Then the residual is checked for number of extrema and energy to make
+           sure it is the trend. If it is not the trend the the last IMF is
+           joined with the residual to form the new residual.
+        4) If the last IMF has less than 3 extrema, then add this to the residual.
+        3) Finally, if the number of components after this treatment is less
+           than s, then the last component is assumed to be the residual
+           and the missing component is assumed to be the last IMFs, i.e.
+           the low frequency IMFs.
+
+    Parameters
+    ----------
+    IMFs : ndarray, size=(max_imf+1, q)
+        The components returned by a decomposition method making a maximum of 
+        max_imf+1 components. If less than max_imf+1 components were found then
+        the empty axes are zeros.
+    J : int
+        The desired number of components.
+    i : int
+        Time index.
+
+    Returns
+    -------
+    IMFs_fixed : ndarray, size=(J, q)
+        Fixed version of IMFs with desired size of first axis.
+    """
+    J_old, q = np.shape(IMFs)
+    for k in range(J_old):
+        if np.sum(IMFs[k, :]) == 0:
+            s_found = k
+            break
+        elif k == J_old-1:
+            s_found = k+1
+
+    if s_found == 0:
+        return IMFs[:J, :]
+    else:
+        IMFs_fixed = np.zeros((J, q), dtype=np.float32)
+    
+        # Step 1) and 2)
+        j = 0
+        number_of_extrema = 5
+        while number_of_extrema > 4 and np.linalg.norm(IMFs_fixed[J-1, :], ord=2) < 1e-01:
+            j += 1
+            if s_found > J:
+                IMFs_fixed[J-1, :] = np.sum(IMFs[J-j:, :], axis=0)
+            else:
+                IMFs_fixed[J-1, :] = np.sum(IMFs[s_found-j:, :], axis=0)
+    
+            d = np.diff(IMFs_fixed[J-1, :])
+            d1, d2 = d[:-1], d[1:]
+            indmin = np.nonzero(np.r_[d1 * d2 < 0] & np.r_[d1 < 0])[0] + 1
+            indmax = np.nonzero(np.r_[d1 * d2 < 0] & np.r_[d1 > 0])[0] + 1
+            number_of_extrema = len(indmin) + len(indmax)        
+
+        assert s_found > j, "No IMFs?"
+
+        # Step 3)
+        if s_found-j < J-1:
+            IMFs_fixed[J-1-(s_found-j):J-1, :] = IMFs[:s_found-j, :]
+        elif s_found-j >= J-1:
+            IMFs_fixed[:J-1, :] = IMFs[:J-1, :]
+
+        # Step 4)
+        d = np.diff(IMFs_fixed[J-2, :])
+        d1, d2 = d[:-1], d[1:]
+        indmin = np.nonzero(np.r_[d1 * d2 < 0] & np.r_[d1 < 0])[0] + 1
+        indmax = np.nonzero(np.r_[d1 * d2 < 0] & np.r_[d1 > 0])[0] + 1
+        number_of_extrema = len(indmin) + len(indmax)
+        if number_of_extrema < 5:
+            IMFs_fixed[J-1, :] = np.sum(IMFs_fixed[J-2:, :], axis=0)
+            IMFs_fixed[1:J-1, :] = IMFs_fixed[0:J-2, :]
+            IMFs_fixed[0, :] = np.zeros(q, dtype=np.float32)
+        return IMFs_fixed
+
+
+def unification_procedure(IMFs, s):
+    """
+    Parameters
+    ----------
+    IMFs : ndarray, size=(max_imf+1, q)
+        The components returned by a decomposition method making a maximum of 
+        max_imf+1 components. If less than max_imf+1 components were found then
+        the empty axes are zeros.
+    s : int
+        The desired number of IMFs.
+
+    Returns
+    -------
+    IMFs_new_fixed : ndarray, size=(s, q)
+        The unified IMFs.
+    """
+    n, _, q = np.shape(IMFs)
+    J = s+1
+    IMFs_fixed = np.zeros((n, J, q), dtype=np.float32)
+    for i in range(n):
+        IMFs_fixed[i, :, :] = unify_IMFs(IMFs, J, i)
+    n, J, q = np.shape(IMFs_fixed)
+    s = J-1
+    s_array = np.zeros(n, dtype=np.int32)
+    for i in range(n):
+        for k in range(J):
+            if np.sum(IMFs_fixed[i, -(k+1), :]) == 0:
+                s_array[i] = k
+                break
+            elif k == s:
+                s_array[i] = k+1
+    IMFs_new_fixed = np.zeros((n, J, q), dtype=np.float32)
+    IMFs_new_fixed[:, -1, :] = IMFs_fixed[:, -1, :]
+
+    for k in range(J):
+        if k > 1 and len(s_array == k) != 0:
+            IMFs_new_fixed[s_array==k, :k-1, :] = IMFs_fixed[s_array==k, s-(k-1):s, :]
+    return IMFs_new_fixed
 
 
 def main():
