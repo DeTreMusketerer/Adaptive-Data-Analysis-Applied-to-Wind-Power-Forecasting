@@ -159,7 +159,7 @@ for k in range(s+1):
 np.save(f"Data/forecast_array_{model_name_PDE}.npy", forecast_array)
 
 
-#offline EMD-LSTM
+# Offline EMD-LSTM
 input_size_EMD = 3
 hidden_sizes_EMD = [128,128,128]
 dropout_EMD = 0.1
@@ -184,7 +184,7 @@ for k in range(20):
 np.save(f"Data/forecast_array_EMD_{model_name_EMD}.npy", forecast_array_EMD)
 
 
-#Plotting
+# Plotting
 test_data = np.load("Data/test_data.npy")
 model_name_EMD = "EMD-LSTM128"
 EMD_forecast = np.load(f"Data/forecast_array_EMD_{model_name_EMD}.npy")
