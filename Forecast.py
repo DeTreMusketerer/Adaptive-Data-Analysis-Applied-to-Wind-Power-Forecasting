@@ -1,3 +1,9 @@
+"""
+This script is used to make a forecast with the trained PDE-EMD-LSTM
+and the offline EMD-LSTM
+"""
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
@@ -7,28 +13,25 @@ import matplotlib.dates as mdates
 from NN_module import LSTM, PyTorchDataset_RealTime, PyTorchDataset
 
 
-
 def Forecast(model, device, test_loader, hidden_sizes):
     """
-    
 
     Parameters
     ----------
-    model : TYPE
-        DESCRIPTION.
-    device : TYPE
-        DESCRIPTION.
-    test_loader : TYPE
-        DESCRIPTION.
-    hidden_sizes : TYPE
-        DESCRIPTION.
+    model : Pyrouch model
+    device : device
+    test_loader : Dataloader
+        Dataloader for the test set.
+    hidden_sizes : List
+        list with the hidden sizes of the neural network
 
     Returns
     -------
-    output_array : TYPE
-        DESCRIPTION.
+    output_array : ndarray
+        array of the forecasted power.
 
     """
+    
     model.eval()
     n = len(test_loader.dataset)
     output_array = np.zeros(n)
@@ -63,9 +66,11 @@ def Forecast_persistence(device, test_loader):
 
     Returns
     -------
-    epsilon : ndarray, size=(n,)
-        The test error.
+    output_array : ndarray
+        array of the forecasted power.
+        
     """
+    
     n = len(test_loader.dataset)
     batch_size = test_loader.batch_size
     output_array = np.zeros(n, dtype = 'float32')
@@ -83,11 +88,8 @@ def Forecast_persistence(device, test_loader):
     return output_array
 
 
+# PDE-EMD-LSTM
 model_name_PDE = "PDE-EMD-Live-LSTM089"
-
-# =============================================================================
-# Read model settings
-# =============================================================================
 with open(f"results/{model_name_PDE}.txt", "r") as file:
     line = file.readline()
     q = int(line.split()[-1])
@@ -140,15 +142,12 @@ with open(f"results/{model_name_PDE}.txt", "r") as file:
         line = file.readline()
         upd_epoch[k] = int(line.split()[-1])
 
-
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-
 dset = PyTorchDataset_RealTime(y_test[:, 0, :], test_mesh, xi, input_size, tau)
 test_loader = torch.utils.data.DataLoader(dset, batch_size, shuffle = False)
 n_test = len(test_loader.dataset)
 forecast_array = np.zeros(n_test, dtype=np.float32)
 
-#PDE
 for k in range(s+1):
     if upd_epoch[k] != 0:
         model = LSTM(input_size, hidden_sizes, dropout_hidden).to(device)
@@ -160,8 +159,7 @@ for k in range(s+1):
 np.save(f"Data/forecast_array_{model_name_PDE}.npy", forecast_array)
 
 
-
-#EMD
+#offline EMD-LSTM
 input_size_EMD = 3
 hidden_sizes_EMD = [128,128,128]
 dropout_EMD = 0.1
@@ -186,7 +184,7 @@ for k in range(20):
 np.save(f"Data/forecast_array_EMD_{model_name_EMD}.npy", forecast_array_EMD)
 
 
-
+#Plotting
 test_data = np.load("Data/test_data.npy")
 model_name_EMD = "EMD-LSTM128"
 EMD_forecast = np.load(f"Data/forecast_array_EMD_{model_name_EMD}.npy")
