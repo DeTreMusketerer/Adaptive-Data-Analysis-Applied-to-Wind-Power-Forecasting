@@ -1,5 +1,5 @@
 # Adaptive-Data-Analysis-Applied-to-Wind-Power-Forecasting
-This GitHub repository contains the scripts for the masters thesis on "Adaptive Data Analysis Applied to Wind Power Forecasting" made by graduate students in Mathematical-Engineering at Aalborg University. The thesis has been made in cooperation with Energinet who also supplied the data used for the numerical experiments.
+This GitHub repository contains the scripts for the master's thesis on "Adaptive Data Analysis Applied to Wind Power Forecasting" made by graduate students in Mathematical-Engineering at Aalborg University. The thesis has been made in cooperation with Energinet who also supplied the data used for the numerical experiments.
 
 Authors:	Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
 
