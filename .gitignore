@@ -1,5 +1,4 @@
 PyEMD/*
-**/Data/*.npy
 **/Data/*.mat
 **/Data/*.txt
 **/Data/*.pickle
