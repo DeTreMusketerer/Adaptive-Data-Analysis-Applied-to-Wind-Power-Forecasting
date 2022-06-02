@@ -1,5 +1,5 @@
 """
-This script decomposes a signal into IMFs using a PDE based method.
+This script decomposes a signal into IMFs using the PDE-EMD.
 Method imnspired by: 
 H. Wang, R. Mann, and E. R. Vrscay, A novel foward-pde approach as
 an alternative to empirical mode decomposition, 2018.
