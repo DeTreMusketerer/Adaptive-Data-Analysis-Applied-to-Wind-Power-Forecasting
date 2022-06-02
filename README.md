@@ -24,6 +24,12 @@ EMD-signal 1.2.3
 
 
 ## Data
+- Data/
+    - Installed_Capacity.py
+    - test_data.npy
+    - training_data.npy
+    - test_mesh_q288.npy
+    - training_mesh_q288.npy
 
 
 ## Modules
