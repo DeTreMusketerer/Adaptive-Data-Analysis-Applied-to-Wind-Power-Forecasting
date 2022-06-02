@@ -33,15 +33,31 @@ EMD-signal 1.2.3
 
 
 ## Modules
+`HilberHuangTransform.py`
+	- Module with functionality used to calculate instantaneous frequency and amplitude using the Hilbert-Huang transform.
 
+`NN_module.py`
+	- Module containing functionality used when training and testing neural networks.
 
+`NonlinearMatchingPursuit.py`
+	- Module containing the functionality used to make the NMP-EMD and FFT-NMP-EMD.
+
+`PDE_EMD.py`
+	- Module containing the functionality used to make the PDE-EMD.
+
+`PerformanceMeasures.py`
+	- Module containing functions used to calculate decomposition performance measures.
+    
+`sVARMAX_Module.py`
+	- Module containing the main class for estimation and forecasting with s-ARIMAX and s-VARIMAX models.
+    
 ## Scripts
 
 
 ## Usage
 To use this GitHub repository follow these steps:
 
-1) Add the empty folders (figures/, models/, results/) to your local repository and save the supplied data as indicated by the Data and Files sections.
+1) Add the empty folders (figures/, models/, results/, Data/CM/) to your local repository and save the supplied data as indicated by the Data section.
 2) Install Python with the dependencies stated in the Dependencies section.
 3) Make decompositions using the decomposition scripts.
 4) Train and test models using the scripts. Make sure to set the parameters etc. in the scripts. Note that the neural network models are compatible with GPU computing if CUDA is available and we recommend using a GPU for these computations.
