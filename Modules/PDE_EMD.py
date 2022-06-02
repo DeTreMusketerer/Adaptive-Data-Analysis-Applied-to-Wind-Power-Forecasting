@@ -205,7 +205,7 @@ class PDE_EMD():
         return A
     
     
-    def mean_envelope(self, A, signal, spatialline, T, alpha,  t_0 = 0, flops = False):
+    def mean_envelope(self, A, signal, spatialline, T, alpha,  t_0 = 0):
         """
         The main functionality for solving the PDE whose solution is the local mean
         of the signal.
@@ -223,8 +223,6 @@ class PDE_EMD():
             alpha parameter of the PDE.
         t_0 : int, optional
             starttime. The default is 0
-        flops : bool, optional
-            Determines if the mean finding procedure is timed.
     
         Returns
         -------
@@ -247,13 +245,11 @@ class PDE_EMD():
         I = np.eye(n)
         for j in range(N):
             h = np.matmul((I - const*A),h)          
-        if flops:
-            return h, N
         return h
     
     
     def PDE_EMD(self, spatialline, signal, T, max_IMF = 20, plots = False, t_0 = 0,
-                boundary = "Dirichlet_1", flops = False, savefig = False):
+                boundary = "Dirichlet_1", savefig = False):
         """
         The script for determining the IMFs and residual of a signal. This method
         is inspired by 
@@ -276,10 +272,6 @@ class PDE_EMD():
             Choses which type of boundary condition is used. Currently, Dirichlet_0,
             Dirichlet_1, Neumann_0 and Neumann_1 are implemented.
             The default is "Dirichlet_1".
-        flops : str, optional
-            If True function returns a list of calculation time and number of 
-            matrix multiplications.
-            The default is "False"
         savefig : str, optional
             If True the function saves the generated figures.
             The default is False
@@ -290,9 +282,6 @@ class PDE_EMD():
     
         """
         
-        if flops:
-            N_list = []
-            time_list = []
         n = len(signal)
         IMFNo = 0
         IMF = copy.copy(signal)
@@ -315,17 +304,9 @@ class PDE_EMD():
             else:
                 alpha = 1/(4*np.pi**2)
                 T = 3
-            
-            if flops:
-                start = time.time()
-                mean, N = self.mean_envelope(A, r, spatialline, T, alpha, t_0, flops = True)
-                IMF = r - mean
-                end = time.time()
-                N_list.append(N)
-                time_list.append(end-start)
-            else:
-                mean = self.mean_envelope(A, r, spatialline, T, alpha, t_0)
-                IMF = r - mean
+
+            mean = self.mean_envelope(A, r, spatialline, T, alpha, t_0)
+            IMF = r - mean
             
             if np.allclose(IMF,0):
                 break
@@ -360,8 +341,6 @@ class PDE_EMD():
             plt.show()
         IMFs = np.vstack((IMFs, r))
         
-        if flops:
-            return IMFs, N_list, time_list
         return IMFs
     
     
@@ -446,7 +425,7 @@ if __name__ == '__main__':
     #     time_start = time.time()
     #     IMFs, N_list = PDE_EMD().PDE_EMD(spatialline, signal, i+1,
     #                         max_IMF = 10, plots = True,
-    #                         boundary = boundary_type, flops = False)
+    #                         boundary = boundary_type)
     #     time_end = time.time()
     #     total_time += time_end - time_start
     #     component_list.append(len(IMFs))
@@ -464,24 +443,6 @@ if __name__ == '__main__':
     # fig.legend(["Time", "Components"])
     # plt.show()
     # fig.savefig('figures/T_effect.pdf', dpi=400)
-    
-    # flops
-    # IMFs, N_list, time_list = PDE_EMD().PDE_EMD(spatialline, signal, T = 3,
-    #                     max_IMF = 10, plots = True, boundary = boundary_type,
-    #                     flops = True)
-    # compoenents = len(IMFs)
-    # c_line = np.linspace(1,compoenents-1,compoenents-1)
-    # plt.style.use('seaborn-darkgrid')
-    # fig,ax = plt.subplots()
-    # ax.plot(c_line, time_list, color = "#1f77b4")
-    # ax.set_xlabel("Component Number")
-    # ax.set_ylabel("Time [s]")
-    # ax2=ax.twinx()
-    # ax2.plot(c_line, N_list, color = "#ff7f0e")
-    # ax2.set_ylabel("Number of updates")
-    # fig.legend(["Time", "Updates"])
-    # plt.show()
-    # fig.savefig('figures/N_effect.pdf', dpi=400)
     
 
     # #Component plots

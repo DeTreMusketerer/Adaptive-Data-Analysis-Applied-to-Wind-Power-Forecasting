@@ -1,146 +1,29 @@
+"""
+In this script the unified windows resulting from the PDE-EMD are analysed
+"""
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import PerformanceMeasures as PM
-import PDE_EMD as PDE
 import HilbertHuangTransform as HHT
 
-days = 1
+
 q = 288
 T = 6
 s = 4
 boundary = "Neumann_0"
 data_type = "train"
 if data_type == "train":
-    decomposition = np.load(f"Data/PDE_Window_q{q}_T{T}_{boundary}.npy")
+    unified = np.load(f"Data/PDE_Window_fixed_q{q}_T{T}_s{s}_{boundary}.npy")
 else:
-    decomposition = np.load(f"Data/PDE_Window_Test_q{q}_T{T}_{boundary}.npy")
-n, m, q = np.shape(decomposition)
+    unified = np.load(f"Data/PDE_Window_Test_fixed_q{q}_T{T}_s{s}_{boundary}.npy")
+n, m, q = np.shape(unified)
 train_mesh = np.load(f"Data/train_mesh_q{q}.npy")
 test_mesh = np.load(f"Data/test_mesh_q{q}.npy")
+    
 
-
-#%% Histogram
-component_count = np.zeros(n).astype(np.int32)
-for i in range(n):
-    for j in range(m):
-        if not np.allclose(decomposition[i,j,:],0):
-            component_count[i] += 1
-
-component_count = component_count[component_count != 0]
-label, count = np.unique(component_count, return_counts=True)
-total = np.sum(count)
-HHT.plot_style()
-plt.bar(label, count/total, width = 0.7)
-plt.xlabel("Number of components")
-plt.ylabel("Empirical probability")
-plt.xticks([3, 4, 5,6,7,8,9,10])
-plt.savefig(f"figures/Histogram_q{q}_T{T}_{boundary}.png", dpi = 600)
-plt.show()
-
-green_diamond = dict(markerfacecolor='g', marker='D')
-plt.boxplot(component_count, flierprops=green_diamond)
-plt.ylabel("Number of components")
-plt.savefig(f"figures/Boxplot_q{q}_T{T}_{boundary}.png", dpi = 600)
-plt.show()
-
-#%% Consistency Measure
-if data_type == "train":
-    try:
-        CM = np.load(f"Data/CM/CM_q{q}_T{T}_{boundary}.npy")
-    except FileNotFoundError:
-        CM = PM.Consistency_PM(decomposition, train_mesh)
-        np.save(f"Data/CM/CM_q{q}_T{T}_{boundary}.npy" ,CM)
-else:
-    try:
-        CM = np.load(f"Data/CM/CM_Test_q{q}_T{T}_{boundary}.npy")
-    except FileNotFoundError:
-        CM = PM.Consistency_PM(decomposition, test_mesh)
-        np.save(f"Data/CM/CM_Test_q{q}_T{T}_{boundary}.npy" ,CM)
-
-
-HHT.plot_style()
-spec = plt.pcolormesh(np.arange(1,288), np.arange(1, len(CM)+1), CM[:,1:], cmap="viridis_r",
-                      shading="auto", vmin=0, vmax=2)
-cb = plt.colorbar(spec)
-cb.set_label(label='CPM')
-plt.gca().invert_yaxis()
-plt.ylabel('Component number (k)')
-plt.xlabel('Time shift (h)')
-plt.savefig(f"figures/CM_PDE_q{q}_T{T}_{boundary}.png", dpi=600, bbox_inches="tight")
-plt.show()
-
-mean_CM = np.mean(CM, axis=0)
-plt.plot(mean_CM[1:175], color="tab:blue")
-plt.xlabel("Time shift (h)")
-plt.ylabel("$\overline{CPM}_h$")
-plt.savefig(f"figures/CM_PDE_Mean_PM_q{q}_T{T}_{boundary}.png", dpi=600, bbox_inches="tight")
-plt.show()
-
-#%% Unification in IMFs
-T_line = np.arange(0, n)
-unified_4 = np.zeros((n,4,q)).astype(np.float32)
-if data_type == "train":
-    try:
-        unified_4 = np.load(f"Data/PDE_Window_IMFs_q{q}_T{T}_{boundary}.npy")
-    except  FileNotFoundError:
-        for i in range(n):
-            unified_4[i,3,:] = np.sum(decomposition[i,4:,:], axis = 0)
-            for j in range(4):
-                max_pos, min_pos, _ = PDE.PDE_EMD.find_extrema(T_line, decomposition[i,j,:])
-                if len(max_pos) + len(min_pos) < 4:
-                    unified_4[i,3,:] += decomposition[i,j,:]
-                elif j == 2 or j == 3:
-                    unified_4[i,2,:] += decomposition[i,j,:]
-                else:
-                    unified_4[i,j,:] += decomposition[i,j,:]
-        np.save(f"Data/PDE_Window_IMFs_q{q}_T{T}_{boundary}.npy", unified_4)
-else:
-    try:
-        unified_4 = np.load(f"Data/PDE_Window_IMFs_Test_q{q}_T{T}_{boundary}.npy")
-    except  FileNotFoundError:
-        for i in range(n):
-            unified_4[i,3,:] = np.sum(decomposition[i,4:,:], axis = 0)
-            for j in range(s):
-                max_pos, min_pos, _ = PDE.PDE_EMD.find_extrema(T_line, decomposition[i,j,:])
-                if len(max_pos) + len(min_pos) < 4:
-                    unified_4[i,3,:] += decomposition[i,j,:]
-                elif j == 2 or j == 3:
-                    unified_4[i,2,:] += decomposition[i,j,:]
-                else:
-                    unified_4[i,j,:] += decomposition[i,j,:]
-        np.save(f"Data/PDE_Window_IMFs_Test_q{q}_T{T}_{boundary}.npy", unified_4)    
-
-#%% Unification in residual
-T_line = np.arange(0, n)
-unified = np.zeros((n,s+1,q)).astype(np.float32)
-if data_type == "train":
-    try:
-        unified = np.load(f"Data/PDE_Window_fixed_q{q}_T{T}_s{s}_{boundary}.npy")
-    except  FileNotFoundError:
-        for i in range(n):
-            unified[i,s,:] = np.sum(decomposition[i,s:,:], axis = 0)
-            for j in range(s):
-                max_pos, min_pos, _ = PDE.PDE_EMD.find_extrema(T_line, decomposition[i,j,:])
-                if len(max_pos) + len(min_pos) < 4:
-                    unified[i,s,:] += decomposition[i,j,:]
-                else:
-                    unified[i,j,:] = decomposition[i,j,:]
-        np.save(f"Data/PDE_Window_fixed_q{q}_T{T}_s{s}_{boundary}.npy", unified)
-else:
-     try:
-         unified = np.load(f"Data/PDE_Window_Test_fixed_q{q}_T{T}_s{s}_{boundary}.npy")
-     except  FileNotFoundError:
-         for i in range(n):
-             unified[i,s,:] = np.sum(decomposition[i,s:,:], axis = 0)
-             for j in range(s):
-                 max_pos, min_pos, _ = PDE.PDE_EMD.find_extrema(T_line, decomposition[i,j,:])
-                 if len(max_pos) + len(min_pos) < 4:
-                     unified[i,s,:] += decomposition[i,j,:]
-                 else:
-                     unified[i,j,:] = decomposition[i,j,:]
-         np.save(f"Data/PDE_Window_Test_fixed_q{q}_T{T}_s{s}_{boundary}.npy", unified)
-
-#%% Histogram after unification
+# Bar chart and box plot
 component_count_consist = np.zeros(n).astype(np.int32)
 for i in range(n):
     for j in range(s+1):
@@ -164,7 +47,7 @@ plt.ylabel("Number of components")
 plt.savefig(f"figures/Boxplot_unified_q{q}_T{T}_s{s}_{boundary}.png", dpi = 600)
 plt.show()
 
-#%% Consistency Measure
+# Consistency Measure
 if data_type == "train":
     try:
         CM = np.load(f"Data/CM/CM_q{q}_T{T}_s{s}_{boundary}_unified.npy")
@@ -196,7 +79,7 @@ plt.ylabel("$\overline{CPM}_h$")
 plt.savefig(f"figures/CM_PDE_Mean_q{q}_T{T}_s{s}_{boundary}_unified.png", dpi=600, bbox_inches="tight")
 plt.show()
 
-#%% IO, EEEI
+# IO, EEEI
 if data_type == "train":
     y_train = np.load("Data/training_data.npy")
     component_count_consist = np.zeros(n).astype(np.int32)
@@ -254,7 +137,7 @@ else:
     AAIO = np.mean(AIO_array)
     AMIO = np.mean(MIO_array)
 
-#%% IA, IF
+# IA, IF
 IF_matrix = np.zeros((5,3)).astype(np.float32)
 IA_matrix = np.zeros((5,3)).astype(np.float32)
 f_s = 288
@@ -274,7 +157,7 @@ for i in range(3,6):
     IA_matrix[:,l] = IA_array/n
     l +=1
 
-#%% Grand comparision
+# Grand comparision
 T_list = [3,4,5,6,7]
 q = 288
 s = 4
