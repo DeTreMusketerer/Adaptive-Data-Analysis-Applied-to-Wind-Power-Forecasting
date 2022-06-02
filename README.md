@@ -52,7 +52,32 @@ EMD-signal 1.2.3
 	- Module containing the main class for estimation and forecasting with s-ARIMAX and s-VARIMAX models.
     
 ## Scripts
+`Forecast.py`
+	- Module used to create a forecast for the oddline EMD-LSTM and the PDE-EMD-LSTM.
 
+`KDE.py`
+	- Module used to calculate the kernel density estimate of the errors for the implemented models.
+
+`PDE_EMD_decomposition.py`
+	- Module used to make the PDE-EMD on the wind power production data.
+
+`PDE_EMD_LSTM_Test.py`
+	- Module used to test a trained PDE-EMD-LSTM model.
+
+`PDE_EMD_LSTM_Training.py`
+	- Module used to train a PDE-EMD-LSTM model.
+
+`PDE_EMD_unification.py`
+	- The unification procedure for the PDE-EMD.
+
+`PDE_EMD_unified_window_data_analysis.py`
+	- Module used to analyse the PDE-EMD before unification.
+
+`PDE_EMD_window_data_analysis.py`
+	- Module used to analyse the PDE-EMD after unification.
+
+`Percentile.py`
+	- Module containing functionality used to calculate a percentile error for the different forecasting models.
 
 ## Usage
 To use this GitHub repository follow these steps:
