@@ -52,7 +52,7 @@ Track changes:
 """
 
 
-from math import floor, ceil
+from math import floor
 import numpy as np
 from scipy.optimize import minimize, LinearConstraint
 from scipy.interpolate import interp1d
