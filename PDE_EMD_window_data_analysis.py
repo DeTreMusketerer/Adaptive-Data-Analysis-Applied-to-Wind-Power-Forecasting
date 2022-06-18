@@ -5,8 +5,8 @@ In this script the windows resulting from the PDE-EMD are analysed
 
 import numpy as np
 import matplotlib.pyplot as plt
-import PerformanceMeasures as PM
-import HilbertHuangTransform as HHT
+import Modules.PerformanceMeasures as PM
+import Modules.HilbertHuangTransform as HHT
 
 
 q = 288
@@ -33,7 +33,13 @@ for i in range(n):
 component_count = component_count[component_count != 0]
 label, count = np.unique(component_count, return_counts=True)
 total = np.sum(count)
-HHT.plot_style()
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 plt.bar(label, count/total, width = 0.7)
 plt.xlabel("Number of components")
 plt.ylabel("Empirical probability")
@@ -61,8 +67,13 @@ else:
         CM = PM.Consistency_PM(decomposition, test_mesh)
         np.save(f"Data/CM/CM_Test_q{q}_T{T}_{boundary}.npy" ,CM)
 
-
-HHT.plot_style()
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 spec = plt.pcolormesh(np.arange(1,288), np.arange(1, len(CM)+1), CM[:,1:], cmap="viridis_r",
                       shading="auto", vmin=0, vmax=2)
 cb = plt.colorbar(spec)

@@ -44,7 +44,7 @@ if __name__ == '__main__':
     s = 3
     boundary = "Neumann_0"
     Type = "LSTM" # Neural network model type, options "LSTM", "GRU".
-    data_type = "IMF-unified"
+    data_type = "normal"
     model_name = "PDE-EMD-Live-LSTM001"
 
 

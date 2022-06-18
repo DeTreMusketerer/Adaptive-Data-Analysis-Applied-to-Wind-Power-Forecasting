@@ -5,8 +5,8 @@ In this script the unified windows resulting from the PDE-EMD are analysed
 
 import numpy as np
 import matplotlib.pyplot as plt
-import PerformanceMeasures as PM
-import HilbertHuangTransform as HHT
+import Modules.PerformanceMeasures as PM
+import Modules.HilbertHuangTransform as HHT
 
 
 q = 288
@@ -30,7 +30,13 @@ for i in range(n):
         if not np.allclose(unified[i,j,:],0):
             component_count_consist[i] += 1
 
-HHT.plot_style()
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 component_count_consist_non_0 = component_count_consist[component_count_consist != 0]
 label, count = np.unique(component_count_consist_non_0, return_counts=True)
 total = np.sum(count)
@@ -38,13 +44,13 @@ plt.bar(label, count/total, width = 0.7)
 plt.xlabel("Number of components")
 plt.ylabel("Empirical probability")
 plt.xticks([3, 4, 5])
-plt.savefig(f"figures/Histogram_unified_q{q}_T{T}_s{s}_{boundary}.png", dpi = 600)
+plt.savefig(f"figures/Histogram_unified_q{q}_T{T}_s{s}_{boundary}.png", dpi = 600, bbox_inches="tight")
 plt.show()
 
 green_diamond = dict(markerfacecolor='g', marker='D')
 plt.boxplot(component_count_consist_non_0, flierprops=green_diamond)
 plt.ylabel("Number of components")
-plt.savefig(f"figures/Boxplot_unified_q{q}_T{T}_s{s}_{boundary}.png", dpi = 600)
+plt.savefig(f"figures/Boxplot_unified_q{q}_T{T}_s{s}_{boundary}.png", dpi = 600, bbox_inches="tight")
 plt.show()
 
 # Consistency Measure
@@ -61,7 +67,13 @@ else:
         CM = PM.Consistency_PM(unified, test_mesh)
         np.save(f"Data/CM/CM_Test_q{q}_T{T}_s{s}_{boundary}_unified.npy" ,CM)    
 
-HHT.plot_style(13)
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 spec = plt.pcolormesh(np.arange(1,288), np.arange(1, s+2), CM[:,1:], cmap="viridis_r",
                       shading="auto", vmin=0, vmax=2)
 cb = plt.colorbar(spec)
@@ -161,7 +173,13 @@ for i in range(3,6):
 T_list = [3,4,5,6,7]
 q = 288
 s = 4
-HHT.plot_style()
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 
 legend_list = [f"T = {i}" for i in T_list]
 
