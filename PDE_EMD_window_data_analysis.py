@@ -6,7 +6,6 @@ In this script the windows resulting from the PDE-EMD are analysed
 import numpy as np
 import matplotlib.pyplot as plt
 import Modules.PerformanceMeasures as PM
-import Modules.HilbertHuangTransform as HHT
 
 
 q = 288

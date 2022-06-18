@@ -7,7 +7,6 @@ and the offline EMD-LSTM
 import numpy as np
 import matplotlib.pyplot as plt
 import torch
-import Modules.HilbertHuangTransform as HHT
 import pandas as pd
 import matplotlib.dates as mdates
 from NN_module import LSTM, PyTorchDataset_RealTime, PyTorchDataset
@@ -193,7 +192,14 @@ PDE_forecast = np.load(f"Data/forecast_array_{model_name_PDE}.npy")
 t_start = 2000-104
 t_end = 2288-104
 
-HHT.plot_style()
+
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 x = pd.date_range("2021-10-12 00:00:00", "2021-10-12 23:55:00", freq="5min")
 fig, ax = plt.subplots(1, 1)
 ax.plot(x,test_data[t_start:t_end], label = "Power production")
