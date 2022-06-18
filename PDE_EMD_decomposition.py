@@ -1,6 +1,12 @@
+# -*- coding: utf-8 -*-
 """
-In this script we decompose the wind data in a multiprocessing fashion
-using the PDE-EMD method. 
+Created on Tue Apr 19 09:43:51 2022
+
+Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
+E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
+
+In this script, the wind power data is decomposed with the PDE-EMD method
+using multiprocessing.
 """
 
 

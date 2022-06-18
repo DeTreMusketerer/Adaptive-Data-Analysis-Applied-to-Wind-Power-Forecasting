@@ -1,5 +1,14 @@
 """
-In this script unification procedure is done for the PDE-EMD
+Created on Thur Apr 21 13:12:06 2022
+
+Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
+E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
+
+In this script, the unification procedure for the PDE-EMD method is implemented
+as described in the report
+        Adaptive Data Analysis:
+        Theoretical Results and an Application to Wind Power Forecasting
+            - Appendix C: Unification Procedure
 """
 
 import numpy as np

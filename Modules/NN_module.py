@@ -6,6 +6,11 @@ Univariate-RNN on the danish wind power production.
 Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
 E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
 
+This module implements:
+    - Neural network training procedure using early stopping
+    - LSTM neural network functionality
+    - Data batch sampling.
+
 Track changes:
     version 1.0: Base implementation. Adapted from 9th semester project.
                  Changed LSTM and GRU classes to allow varying number of layers.

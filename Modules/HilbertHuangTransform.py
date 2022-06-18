@@ -5,6 +5,16 @@ Created on Thu Mar 10 15:12:43 2022
 Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
 E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
 
+This module implements the empirical mode decomposition (EMD) in a live setting
+based on the EMD-signal library. Additionally, it includes functionality to
+compute the Hilber-Huang transform (HHT) by using the analytic signal method to
+find the instantaneous amplitude and instantaneous frequency of
+intrinsic mode functions (IMFs). Finally, the unification procedure for the EMD
+is included as described in the report
+        Adaptive Data Analysis:
+        Theoretical Results and an Application to Wind Power Forecasting
+            - Appendix C: Unification Procedure
+
 Track changes:
     version 1.0: Hilbert-Huang-Transform (22/02/2022)
 			1.1: Bugfixes in the HHT, addition of unittests, color plotting,

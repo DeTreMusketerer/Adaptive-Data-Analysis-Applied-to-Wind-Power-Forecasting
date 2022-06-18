@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-
 Created on Fri Nov 19 11:23:03 2021
 
 Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
@@ -20,7 +19,6 @@ models using the scripts
 
 The module has been developed using Python 3.9 with the
 libraries numpy and scipy.
-
 """
 
 import numpy as np

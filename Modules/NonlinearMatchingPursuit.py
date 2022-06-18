@@ -5,6 +5,15 @@ Created on Mon Feb 28 14:22:44 2022
 Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
 E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
 
+This module implements the NMP-EMD and FFT-NMP-EMD adaptive decomposition
+methods as described in the report
+        Adaptive Data Analysis:
+        Theoretical Results and an Application to Wind Power Forecasting
+            - Chapter 3: Compressive Sensing with Time-Frequency Dictionaries
+
+Method inspired by:
+T. Y. Hou, and Z. Shi, Datadriven Time-Frequency Analysis, 2013.
+
 Track changes:
     version 1.0: Nonlinear Newton type matching pursuit algorithm
                  base implementation. (09/03/2022)
@@ -1083,7 +1092,7 @@ def get_result(result):
     global IMFs
     IMFs[result[0],  :, :] = result[1]
     if result[0] % 100 == 0:
-        np.save("Data/CS_Windows/IMFs_temp.npy", IMFs[:result[0], :, :])
+        np.save("Data/IMFs_temp.npy", IMFs[:result[0], :, :])
 
 def live_NMP_MP(t, signal, EMD_residual, initial_frequencies_list : list=list(), use_fast_alg : bool=True,
                 q : int=288, s : int=4, lambda_K : float=0.5):
@@ -1133,8 +1142,8 @@ def decompose_NMP_MP(y, mesh, model_name : str="001", s : int=4, q : int=288,
     pool.close()
     pool.join()
 
-    np.save(f"Data/CS_Windows/IMFs_{model_name}_{data_}.npy", IMFs)
-    with open(f"Data/CS_Windows/Settings_{model_name}.txt", "w") as file:
+    np.save(f"Data/IMFs_{model_name}_{data_}.npy", IMFs)
+    with open(f"Data/Settings_{model_name}.txt", "w") as file:
         file.write(f"Algorithm settings for CS decomposition number {model_name}\n\n")
         file.write(f"Window length: {q}\n")
         file.write(f"Use fast algorithm: {use_fast_alg}\n")
@@ -1147,7 +1156,7 @@ def decompose_NMP_MP(y, mesh, model_name : str="001", s : int=4, q : int=288,
 
 if __name__ == '__main__':
     np.random.seed(42)
-    use = [1] # Options 0, 1, 3
+    use = [0, 1, 2] # Options 0, 1, 2
 
     # Make a signal
     n = 150
@@ -1219,7 +1228,7 @@ if __name__ == '__main__':
         plt.plot(IMFs[-1, :], label="Residual")
         plt.legend()
         plt.show()
-    if 3 in use:
+    if 2 in use:
         IMFs = PyEMD.EMD(MAX_ITERATION=1000).emd(x)
         C, eps_hat = nonlinear_matching_pursuit(x-IMFs[-1, :], f_s, sparsity=J_true, lambda_init = 0.01, lambda_ = 0.3, K = 20,
                                                  show_progress=False, max_inner_iter=1, auto_init_freq=False,

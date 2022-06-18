@@ -1,9 +1,22 @@
+# -*- coding: utf-8 -*-
 """
-This script decomposes a signal into IMFs using the PDE-EMD.
-Method imnspired by: 
+Created on Mon Mar 7 10:07:42 2022
+
+Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
+E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
+
+This module contains functionality to decompose a signal into IMFs
+using the PDE-EMD method as described in the report
+        Adaptive Data Analysis:
+        Theoretical Results and an Application to Wind Power Forecasting
+            - Chapter 5: Partial Differential Equation Based Adaptive Decomposition
+
+Method inspired by: 
 H. Wang, R. Mann, and E. R. Vrscay, A novel foward-pde approach as
 an alternative to empirical mode decomposition, 2018.
+
 and
+
 N. E. Huang et al., The empirical mode decomposition and the hilbert
 spectrum for nonlinear and non-stationary time series analysis, 1998
 """
@@ -414,7 +427,7 @@ if __name__ == '__main__':
     max_imf = 9
 
     IMFs = PDE_EMD().PDE_EMD(spatialline, signal, T, max_IMF = 10, plots = True,
-                              boundary = boundary_type, savefig = True)
+                              boundary = boundary_type, savefig = False)
 
     # Time plot
     # time_list = []

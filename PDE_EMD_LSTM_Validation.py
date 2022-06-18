@@ -1,11 +1,11 @@
 """
 Created on Tue Apr 19 15:42:06 2022
 
-Decomposition based univariate-RNN on the danish wind power production with
-the decomposition being made online (in windows).
-
 Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
 E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
+
+In this script, early stopping is done for PDE-EMD-LSTM models using the
+subtraining data and the validation data in an online setup.
 
 Track changes:
     version 1.0: Basic adaptation of the online training script. This is
@@ -45,8 +45,8 @@ if __name__ == '__main__':
     boundary = "Neumann_0"
     Type = "LSTM" # Neural network model type, options "LSTM", "GRU".
     data_type = "IMF-unified"
-    model_name = "PDE-EMD-Live-LSTM098"
-        
+    model_name = "PDE-EMD-Live-LSTM001"
+
 
     # =============================================================================
     # Import data

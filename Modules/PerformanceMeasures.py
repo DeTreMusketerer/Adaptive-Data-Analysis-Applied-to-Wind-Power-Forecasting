@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-
 Created on Thu Mar 10 15:13:03 2022
 
 Authors:  Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
 E-Mails: {aand17, mvejli17, mkaabe17}@student.aau.dk
+
+In this module, the indirect performance measures are implemented 
+as described in the report
+        Adaptive Data Analysis:
+        Theoretical Results and an Application to Wind Power Forecasting
+            - Section 6.3: Performance Measures of Decompositions
 
 Track changes:
     version 1.0: Index of Orthogonality. (22/02/2022)
