@@ -11,7 +11,7 @@ NMP-EMD methods using multiprocessing.
 
 
 import numpy as np
-from NonlinearMatchingPursuit import decompose_NMP_MP
+from Modules.NonlinearMatchingPursuit import decompose_NMP_MP
 
 
 if __name__ == "__main__":
