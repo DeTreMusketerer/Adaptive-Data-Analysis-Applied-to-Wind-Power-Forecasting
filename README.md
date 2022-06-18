@@ -29,7 +29,13 @@ EMD-signal 1.2.3
     - test_data.npy
     - training_data.npy
     - test_mesh_q288.npy
+    - test_mesh_not_realtime.npy
     - training_mesh_q288.npy
+    - train_mesh_not_realtime.npy
+    - subtraining_data.npy
+    - subtraining_mesh_not_realtime.npy
+    - validation_data.npy
+    - validation_mesh_not_realtime.npy
 
 
 ## Modules
