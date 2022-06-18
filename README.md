@@ -25,7 +25,7 @@ EMD-signal 1.2.3
 
 ## Data
 - Data/
-    - Installed_Capacity.py
+    - DK1-1_Capacity.npy
     - test_data.npy
     - training_data.npy
     - test_mesh_q288.npy
@@ -52,20 +52,38 @@ EMD-signal 1.2.3
 	- Module containing the main class for estimation and forecasting with s-ARIMAX and s-VARIMAX models.
     
 ## Scripts
-`Forecast.py`
-	- Module used to create a forecast for the oddline EMD-LSTM and the PDE-EMD-LSTM.
+`LSTM_Validation.py`
+	- Script used to train an LSTM model using early stopping.
 
-`KDE.py`
-	- Module used to calculate the kernel density estimate of the errors for the implemented models.
+`LSTM_Test.py`
+	- Script used to train and evaluate a LSTM model.
+
+`EMD_decomposition.py`
+	- Script used to decompose the wind power data using the EMD method.
+
+`NMP_EMD_decomposition.py`
+	- Script used to decompose the wind power data using the FFT-NMP-EMD or NMP-EMD method.
+
+`EMD_LSTM_Validation.py`
+	- Script used to train an EMD-LSTM, FFT-NMP-EMD-LSTM, or NMP-EMD-LSTM model using early stopping.
+
+`EMD_LSTM_Test.py`
+	- Script used to train and evaluate a EMD-LSTM, FFT-NMP-EMD-LSTM, or NMP-EMD-LSTM model.
 
 `PDE_EMD_decomposition.py`
-	- Module used to make the PDE-EMD on the wind power production data.
+	- Script used to decompose the wind power data using the PDE-EMD method.
+
+`PDE_EMD_LSTM_Validation.py`
+	- Script used to train a PDE-EMD-LSTM model using early stopping.
 
 `PDE_EMD_LSTM_Test.py`
-	- Module used to test a trained PDE-EMD-LSTM model.
+	- Script used to train and evaluate a PDE-EMD-LSTM model.
 
-`PDE_EMD_LSTM_Training.py`
-	- Module used to train a PDE-EMD-LSTM model.
+`Forecast.py`
+	- Script used to create a forecast for the oddline EMD-LSTM and the PDE-EMD-LSTM.
+
+`KDE.py`
+	- Script used to calculate the kernel density estimate of the errors for the implemented models.
 
 `PDE_EMD_unification.py`
 	- The unification procedure for the PDE-EMD.
@@ -82,7 +100,9 @@ EMD-signal 1.2.3
 ## Usage
 To use this GitHub repository follow these steps:
 
-1) Add the empty folders (figures/, models/, results/, Data/CM/) to your local repository and save the supplied data as indicated by the Data section.
-2) Install Python with the dependencies stated in the Dependencies section.
-3) Make decompositions using the decomposition scripts.
-4) Train and test models using the scripts. Make sure to set the parameters etc. in the scripts. Note that the neural network models are compatible with GPU computing if CUDA is available and we recommend using a GPU for these computations.
+1) Install Python with the dependencies stated in the Dependencies section.
+2) Make decompositions using the decomposition scripts.
+3) Run early stopping for a model using the validation scripts.
+4) Train and test models using the test scripts.
+
+Make sure to set the parameters etc. in the scripts. Note that the neural network models are compatible with GPU computing if CUDA is available and we recommend using a GPU for these computations.
