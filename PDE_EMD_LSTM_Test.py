@@ -18,7 +18,7 @@ from NN_module import LSTM, PyTorchDataset_RealTime, test, early_stopping_retrai
 
 
 if __name__ == '__main__':
-    model_name = "PDE-EMD-Live-LSTM001"
+    model_name = "PDE-EMD-Live-LSTM089"
     # =============================================================================
     # Read model settings
     # =============================================================================
@@ -67,8 +67,8 @@ if __name__ == '__main__':
         y_train = np.load(f"Data/PDE_Window_fixed_q{q}_T{T}_s{s}_{boundary}.npy")
         y_test = np.load(f"Data/PDE_Window_Test_fixed_q{q}_T{T}_s{s}_{boundary}.npy")
     elif type_data == "IMF-unified": # Reduces in IMFs
-        y_train = np.load(f"Data/PDE_Window_IMFs_q{q}_T{T}_s{s}_{boundary}.npy")
-        y_test = np.load(f"Data/PDE_Window_IMFs_Test_q{q}_T{T}_s{s}_{boundary}.npy")
+        y_train = np.load(f"Data/PDE_Window_IMFs_q{q}_T{T}_{boundary}.npy")
+        y_test = np.load(f"Data/PDE_Window_IMFs_Test_q{q}_T{T}_{boundary}.npy")
     else:
         print("type_data variable not supported")
     
