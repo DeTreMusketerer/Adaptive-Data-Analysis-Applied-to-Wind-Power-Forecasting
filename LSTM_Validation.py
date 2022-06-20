@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
     opt_upd, upd_epoch, valid_loss, training_loss, min_valid_loss = early_stopping(
         model, device, optimiser, scheduler, subtrain_loader, valid_loader,
-        log_interval, patience, epochs)
+        log_interval, patience, epochs, hidden_sizes)
 
     print("Minimum validation loss: ", min_valid_loss)
 
