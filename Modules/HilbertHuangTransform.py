@@ -274,7 +274,7 @@ def HHT(y, f_s, diff = 'trapezoid', order = 2, **kwargs):
     return omega, a
 
 
-def unify_IMFs(IMFs, J, i):
+def unify_IMFs(IMFs, J):
     """
     Unify the components for different windows in terms of what each component
     represents. This consists of a number of steps:
@@ -297,8 +297,6 @@ def unify_IMFs(IMFs, J, i):
         the empty axes are zeros.
     J : int
         The desired number of components.
-    i : int
-        Time index.
 
     Returns
     -------
@@ -375,7 +373,7 @@ def unification_procedure(IMFs, s):
     J = s+1
     IMFs_fixed = np.zeros((n, J, q), dtype=np.float32)
     for i in range(n):
-        IMFs_fixed[i, :, :] = unify_IMFs(IMFs, J, i)
+        IMFs_fixed[i, :, :] = unify_IMFs(IMFs[i, :, :], J)
     n, J, q = np.shape(IMFs_fixed)
     s = J-1
     s_array = np.zeros(n, dtype=np.int32)

@@ -17,6 +17,7 @@ import Modules.HilbertHuangTransform as HHT
 if __name__ == "__main__":
     days = 1
     q = 288*days
+    f_s = 288
     max_imf = 10
     data_type = "training"
     if data_type == "training":
@@ -34,3 +35,11 @@ if __name__ == "__main__":
     print("Unification Done")
 
     np.save(f"Data/EMD_Window_q{q}_{data_type}_data.npy", IMFs_fixed)
+
+    # Step 5)
+    IF = np.zeros(np.shape(IMFs_fixed), dtype=np.float32)
+    for i in range(len(y)):
+        for k in range(s):
+            if np.sum(IMFs_fixed[i, k, :]) != 0:
+                IF[i, k, :], _ = HHT.IF_IA(IMFs_fixed[i, k, :], f_s)
+    np.save(f"Data/EMD_Window_q{q}_{data_type}_data_IF.npy", IF)
