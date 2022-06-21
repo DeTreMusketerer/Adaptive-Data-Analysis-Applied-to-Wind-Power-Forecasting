@@ -30,7 +30,7 @@ if __name__ == "__main__":
     IMFs_init = HHT.decompose_EMD_MP(y, mesh, model_name=f"{data_type}_q{q}", q=q, max_imf=9)
     print("Decomposition Done")
 
-    s = 6
+    s = 5
     IMFs_fixed = HHT.unification_procedure(IMFs_init, s)
     print("Unification Done")
 
