@@ -5,7 +5,6 @@ calculated and plotted
 
 
 import numpy as np
-import Modules.HilberthuangTransform as HHT
 import matplotlib.pyplot as plt
 import scipy.stats as ss
 
@@ -16,7 +15,13 @@ edge = 0.16*100
 points = 500
 x = np.linspace(-edge, edge, points)
 CAP = np.load("Data/DK1-1_Capacity.npy")/1000
-HHT.plot_style()
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 
 #EMD
 eps_EMD = np.load(f"results/{methods[0]}.npy")
@@ -70,7 +75,13 @@ plt.show()
 edge = 120
 points = 500
 x = np.linspace(-edge, edge, points)
-HHT.plot_style()
+fontsize = 13
+params = {'axes.titlesize': fontsize,
+          'axes.labelsize': fontsize,
+          'xtick.labelsize': fontsize,
+          'ytick.labelsize': fontsize}
+plt.rcParams.update(params)
+plt.style.use('seaborn-darkgrid')
 
 # PDE
 eps_PDE = np.load("results/test_error_PDE-EMD-Live-LSTM089.npy")
