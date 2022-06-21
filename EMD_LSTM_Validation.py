@@ -20,7 +20,7 @@ import torch
 import numpy as np
 from torch import optim
 from torch.optim.lr_scheduler import StepLR
-from NN_module import LSTM, GRU, PyTorchDataset_RealTime, early_stopping, test
+from Modules.NN_module import LSTM, GRU, PyTorchDataset_RealTime, early_stopping, test
 
 
 if __name__ == '__main__':
@@ -30,25 +30,26 @@ if __name__ == '__main__':
     seed = 42
     torch.manual_seed(seed)
     np.random.seed(seed)
-    max_epochs = 1 # Maximum number of epochs.
-    input_size = 12 # Number of samples in a training dataset.
+    max_epochs = 100 # Maximum number of epochs.
+    input_size = 3 # Number of samples in a training dataset.
     tau = 12 # Number of samples we predict ahead.
     batch_size = 32
     learning_rate = 1e-04 # Initial learning rate.
-    hidden_sizes = [512, 256, 128] # Number of hidden units in hidden layers.
-    dropout_hidden = 0.1 # Dropout rate.
-    gamma = 0.7 # Learning rate decay.
-    log_interval = 100 # Interval for logging validation loss during early stopping.
-    patience = 50 # Patience parameter for early stopping.
+    hidden_sizes = [64, 64, 32] # Number of hidden units in hidden layers.
+    dropout_hidden = 0.3 # Dropout rate.
+    gamma = 0.9 # Learning rate decay.
+    log_interval = 600 # Interval for logging validation loss during early stopping.
+    patience = 60 # Patience parameter for early stopping.
     q = 288 # Window length
-    xi = 12 # Shift of window for target
+    xi = 0 # Shift of window for target
     Type = "LSTM" # Neural network model type, options "LSTM", "GRU".
-    model_name = "EMD-Live-LSTM001"
+    model_name = "FFT-NMP-EMD-Live-LSTM001"
 
     # =============================================================================
     # Import data
     # =============================================================================
-    y_train = np.load(f"Data/EMD_Window_q{q}_training_data.npy")
+    #y_train = np.load(f"Data/EMD_Window_q{q}_training_data.npy")
+    y_train = np.load("Data/IMFs_FFT-NMP-EMD001_training.npy")
     train_mesh = np.load(f"Data/train_mesh_q{q}.npy")
     power_sub = np.load("Data/subtraining_data.npy")
     n_sub = np.shape(power_sub)[0]
@@ -116,7 +117,7 @@ if __name__ == '__main__':
             file.write(f"Optimum number of parameter update (opt_upd): {opt_upd}\n")
             file.write(f"Subtrain updates pr epoch (upd_epoch): {upd_epoch}\n")
             file.write(f"Minimum validation loss: {min_valid_loss}\n")
-            file.write(f"Component energy: {np.mean(y_val[:, k, :]**2)}")
+            file.write(f"Component energy: {np.mean(y_val[:, k, :]**2)}\n")
 
         # Save learning curves
         with open(f'results/validation_loss_{model_name}_{k}.npy', 'wb') as file:
@@ -124,7 +125,7 @@ if __name__ == '__main__':
         with open(f'results/training_loss_{model_name}_{k}.npy', 'wb') as file:
             np.save(file, training_loss)
 
-        epsilon[:, k] = test(model, device, valid_loader)
+        epsilon[:, k] = test(model, device, valid_loader, hidden_sizes)
 
     tot_val_loss = np.mean(np.sum(epsilon, axis=1)**2)
     with open(f"results/{model_name}.txt", "a") as file:
