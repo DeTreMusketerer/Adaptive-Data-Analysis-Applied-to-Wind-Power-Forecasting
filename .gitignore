@@ -14,8 +14,6 @@ Data/EEEI/*
 figures/*
 Learning/*
 !figures/open_npy.py
-models/*
-results/*
 !results/learning_curve.py
 !results/error_analysis.py
 validation_settings/*
