@@ -20,7 +20,7 @@ import torch
 import numpy as np
 from torch import optim
 from torch.optim.lr_scheduler import StepLR
-from NN_module import LSTM, GRU, PyTorchDataset_RealTime, test, early_stopping_retrain, test_pred_zero
+from Modules.NN_module import LSTM, GRU, PyTorchDataset_RealTime, test, early_stopping_retrain, test_pred_zero
 
 
 if __name__ == '__main__':
