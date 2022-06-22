@@ -18,7 +18,7 @@ import torch
 import numpy as np
 from torch import optim
 from torch.optim.lr_scheduler import StepLR
-from NN_module import LSTM, GRU, PyTorchDataset, test, early_stopping_retrain
+from Modules.NN_module import LSTM, GRU, PyTorchDataset, test, early_stopping_retrain
 
 
 if __name__ == '__main__':
