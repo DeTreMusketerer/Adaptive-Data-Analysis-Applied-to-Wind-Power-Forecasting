@@ -18,7 +18,7 @@ import torch
 import numpy as np
 from torch import optim
 from torch.optim.lr_scheduler import StepLR
-from NN_module import LSTM, GRU, PyTorchDataset, early_stopping
+from Modules.NN_module import LSTM, GRU, PyTorchDataset, early_stopping
 
 
 if __name__ == '__main__':
@@ -28,16 +28,16 @@ if __name__ == '__main__':
     seed = 42
     torch.manual_seed(seed)
     np.random.seed(seed)
-    epochs = 30 # Maximum number of epochs.
-    input_size = 12 # Number of samples in a training datapoint.
+    epochs = 100 # Maximum number of epochs.
+    input_size = 3 # Number of samples in a training datapoint.
     tau = 12 # Number of samples we predict ahead.
     batch_size = 32
     learning_rate = 1e-04 # Initial learning rate.
-    hidden_sizes = [512, 256, 128] # Number of hidden units in hidden layers.
-    dropout_hidden = 0.1 # Dropout rate.
+    hidden_sizes = [128, 128, 128] # Number of hidden units in hidden layers.
+    dropout_hidden = 0.3 # Dropout rate.
     gamma = 0.7 # Learning rate decay.
-    log_interval = 100 # Interval for logging validation loss during early stopping.
-    patience = 50 # Patience parameter for early stopping.
+    log_interval = 600 # Interval for logging validation loss during early stopping.
+    patience = 60 # Patience parameter for early stopping.
     Type = "LSTM" # Neural network model type, options "LSTM", "GRU".
     model_name = "LSTM001"
 
