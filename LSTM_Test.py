@@ -47,8 +47,6 @@ if __name__ == '__main__':
         line = file.readline()
         _ = int(line.split()[-1])
         line = file.readline()
-        _ = int(line.split()[-1])
-        line = file.readline()
         seed = int(line.split()[-1])
         line = file.readline()
         opt_upd = int(line.split()[-1])
