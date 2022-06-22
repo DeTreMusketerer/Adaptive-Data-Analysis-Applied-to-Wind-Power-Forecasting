@@ -32,7 +32,7 @@ if __name__ == '__main__':
     input_size = 3 # Number of samples in a training datapoint.
     tau = 12 # Number of samples we predict ahead.
     batch_size = 32
-    learning_rate = 1e-04 # Initial learning rate.
+    learning_rate = 1e-03 # Initial learning rate.
     hidden_sizes = [128, 128, 128] # Number of hidden units in hidden layers.
     dropout_hidden = 0.3 # Dropout rate.
     gamma = 0.7 # Learning rate decay.
