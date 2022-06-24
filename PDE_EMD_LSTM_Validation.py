@@ -101,12 +101,13 @@ if __name__ == '__main__':
     print('Using {} device'.format(device))
     
     epsilon = np.zeros((n_val-q-tau-xi, s+1))
-    if s == 3 or data_type == "IMF-unified": # this is quite specific for unified data
-        s = 3
-        pred_zero = [0,0,1,1]
-    else:
-        s = 4
-        pred_zero = [0,0,1,1,1]
+    # if s == 3 or data_type == "IMF-unified": # this is quite specific for unified data
+    #     s = 3
+    #     pred_zero = [0,0,1,1]
+    # else:
+    #     s = 4
+    #     pred_zero = [0,0,1,1,1]
+    pred_zero = [0,0,1,1,1]
     for k in range(0,s+1):
         dset3 = PyTorchDataset_RealTime(y_val[:,k,:].reshape(n_val,q), val_mesh, xi, input_size, tau)
         valid_loader = torch.utils.data.DataLoader(dset3, batch_size, shuffle = False)
