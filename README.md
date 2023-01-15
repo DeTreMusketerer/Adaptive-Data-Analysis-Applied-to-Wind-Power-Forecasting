@@ -3,7 +3,7 @@ This GitHub repository contains the scripts for the master's thesis on "Adaptive
 
 Authors:	Andreas Anton Andersen, Martin Voigt Vejling, and Morten Stig Kaaber
 
-E-Mails:	{aand17, mvejli17, mkaabe17}@student.aau.dk
+E-Mails:	ahkaaber@gmail.com
 
 In this work time series data is forecasted using autoregressive models, recurrent neural networks, and hybrid decomposition based model combining adaptive data analysis with recurrent neural networks. The forecasting horizon is one hour ahead based on using the wind power production history. The recurrent neural network used for forecasting is a long short-term memory neural network. The adaptive data analysis methods considered in the thesis are
 - The EMD [The empirical mode decomposition and the Hilbert spectrum for nonlinear and non-stationary time series analysis](https://www.researchgate.net/profile/Norden-Huang/publication/215754718_The_empirical_mode_decomposition_and_the_Hilbert_spectrum_for_nonlinear_and_non-stationary_time_series_analysis/links/5a4701af458515f6b0559c64/The-empirical-mode-decomposition-and-the-Hilbert-spectrum-for-nonlinear-and-non-stationary-time-series-analysis.pdf?_sg%5B0%5D=hbscCBnaTclIP3vMw4GvI8V52Lz2j7EuWX8oho3t4wJ5PFsR0TbsSO6cxPZysbBClItCkSlhZ0p60roNDE-CdQ.qIWtegNH2XPQRQPeSmq_bZumcuG5dWbPjsiVKSPYPrmzBFNYOLIk-uaosv3eYX7UPBt0ecVl5dDvkMZdS3MNVQ&_sg%5B1%5D=jhsy6nhniv2PUsMfV_hFW74hU5P5xBth-AH3lYJ4gefI1pGymRx9ZRulnnnNg0WfIIOrXADb5Bzpcgx5RQUYWTG8bFqSXC19ZyyuCfMJx_Jh.qIWtegNH2XPQRQPeSmq_bZumcuG5dWbPjsiVKSPYPrmzBFNYOLIk-uaosv3eYX7UPBt0ecVl5dDvkMZdS3MNVQ&_iepl=)
